@@ -1,25 +1,22 @@
 //backen/services/usuarioServices
+import pool from "../config/pg.js";
 import { usuario } from "../modelos/usuario.js"
 import bcryptjs from "bcryptjs"
 
 export class RepositorioUsuario {
     static async create({ ci, nombre, email, password }) {
         try {
-            const existeUsuario = await usuario.findOne({ ci });
+            const { rows: [existeUsuario] } = await pool.query('SELECT * FROM usuarios WHERE ci = $1', [ci]);
 
             if (existeUsuario) {
                 return { error: "Ya existe un usuario con esta cédula de identidad" };
             }
 
             const hashedPassword = await bcryptjs.hash(password, 10);
-            let user = new usuario({
-                ci,
-                nombre,
-                email,
-                password: hashedPassword
-            });
-            user = await user.save();
-
+            const { rows: [user] } = await pool.query(
+                'INSERT INTO usuarios (ci, nombre, email, password) VALUES ($1, $2, $3, $4) RETURNING *',
+                [ci, nombre, email, hashedPassword]
+            );
             return { user };
         } catch (error) {
             return { error: error.message };
