@@ -1,11 +1,7 @@
-import pkg from 'pg';
-const { Pool } = pkg;
+import pg from 'pg';
 
-const pool = new Pool({
-    connectionString: process.env.POSTGRES_URI,
-    ssl: {
-        rejectUnauthorized: false
-    }
+const pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL
 })
 
-export default pool
+export default pool  
