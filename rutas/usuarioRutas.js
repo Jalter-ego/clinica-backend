@@ -1,4 +1,3 @@
-//backend/rutas/usuarioRutas.js
 import express from "express";
 import { registerHandler, loginHandler } from '../controladores/usuarioController.js'
 import pool from "../config/pg.js";
