@@ -1,6 +1,6 @@
 //backend/index.js
 import express from 'express';
-import { autenticacion } from './rutas/UsuarioRutas.js';
+import { autenticacion } from './rutas/usuarioRutas.js';
 
 import dotenv from 'dotenv';
 dotenv.config();
