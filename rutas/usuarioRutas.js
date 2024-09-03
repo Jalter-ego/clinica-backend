@@ -1,6 +1,6 @@
 import express from "express";
-import { registerHandler, loginHandler } from '../controladores/usuarioController.js'
 import pool from "../config/pg.js";
+import { registerHandler, loginHandler } from '../controladores/usuarioController.js'
 export const autenticacion = express.Router()//creando un enrutador
 
 autenticacion.use(express.json())

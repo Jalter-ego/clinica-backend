@@ -27,17 +27,25 @@ export class RepositorioUsuario {
             if (!ci || !password) {
                 return { error: "CI y contraseña son obligatorios." };
             }
-            const user = await usuario.findOne({ ci });
 
-            if (!user) {
+            // Consulta para buscar al usuario por CI en PostgreSQL
+            const queryText = 'SELECT * FROM usuarios WHERE ci = $1';
+            const result = await pool.query(queryText, [ci]);
+
+            // Verificamos si el usuario existe
+            if (result.rows.length === 0) {
                 throw new Error("Usuario con esta cédula de identidad no existe.");
             }
 
+            const user = result.rows[0];
+
+            // Comparamos la contraseña ingresada con la almacenada en la base de datos
             const esIgual = await bcryptjs.compare(password, user.password);
             if (!esIgual) {
                 throw new Error("Contraseña incorrecta.");
             }
-            return { user }
+
+            return { user };
         } catch (error) {
             return { error: error.message };
         }
