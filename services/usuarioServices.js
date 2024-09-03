@@ -1,6 +1,5 @@
 //backen/services/usuarioServices
 import pool from "../config/pg.js";
-import { usuario } from "../modelos/usuario.js"
 import bcryptjs from "bcryptjs"
 
 export class RepositorioUsuario {
