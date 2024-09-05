@@ -1,7 +1,6 @@
 //backend/controladores/UsuarioController
 import { RepositorioUsuario } from "../services/usuarioServices.js"
-import { generarToken, getUserFromToken, validarToken } from "../services/authService.js";
-import { RepositorioRol } from "../services/rolesServices.js";
+import { generarToken, getUserFromToken } from "../services/authService.js";
 
 export const registerHandler = async (req, res) => {
     try {
@@ -53,6 +52,22 @@ export const loginHandler = async (req, res) => {
     }
 }
 
+export const eliminarUsuario = async (req, res) => {
+    try {
+        const { ci } = req.body
+        const result = await RepositorioUsuario.eliminar({ ci })
+
+        if (result.error) {
+            return res.status(400).json({ msg: result.error })
+        }
+
+        res.json({ msg: result.msg });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+
+    }
+}
+
 export const verificarToken = async (req, res) => {
     try {
         const token = req.headers['authorization']?.split(' ')[1];
@@ -69,16 +84,3 @@ export const verificarToken = async (req, res) => {
     }
 }
 
-export const registerRol = async (req, res) => {
-    try {
-        const { nombre } = req.body
-        const result = await RepositorioRol.create({ nombre })
-
-        if (result.error) {
-            return res.status(400).json({ msg: resutl.error });
-        }
-        res.json(result.rol)
-    } catch (error) {
-        res.status(500).json({ error: err.message });
-    }
-}

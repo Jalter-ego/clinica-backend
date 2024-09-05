@@ -1,4 +1,5 @@
 //backen/services/usuarioServices
+import { query } from "express";
 import pool from "../config/pg.js";
 import bcryptjs from "bcryptjs"
 
@@ -48,5 +49,20 @@ export class RepositorioUsuario {
         } catch (error) {
             return { error: error.message };
         }
+    }
+
+    static async eliminar({ ci }) {
+        try {
+            const { rows: [existeUsuario] } = await pool.query('select * from usuarios where ci = $1', [ci])
+            if (!existeUsuario) {
+                return { error: "no existe el usuario" }
+            }
+
+            await pool.query('delete from usuarios where ci = $1', [ci])
+            return { msg: "usuario eliminado exitosamente" }
+        } catch (err) {
+            return { error: err.message }
+        }
+
     }
 }
