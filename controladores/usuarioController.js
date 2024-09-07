@@ -4,26 +4,28 @@ import { generarToken, getUserFromToken } from "../services/authService.js";
 
 export const registerHandler = async (req, res) => {
     try {
-        const { ci, nombre, email, password } = req.body;
-        const user = await RepositorioUsuario.create({ ci, nombre, email, password });
+        const { ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, password } = req.body;
+        const user = await RepositorioUsuario.create({
+            ci, nombre, apellido_paterno,
+            apellido_materno, fecha_nacimiento, email, password
+        });
 
         if (user.error) {
             return res.status(400).json({ msg: user.error });
         }
         const payload = {
-            id: user._id,
-            ci: user.ci,
-            nombre: user.nombre,
-            rol_id: user.rol_id
-        }
-        const token = generarToken(payload)
+            id: user.user.id,
+            ci: user.user.ci,
+            rol_id: user.user.rol_id
+        };
+        const token = generarToken(payload);
 
-        // Retornar solo el token
         res.json({ token });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
-}
+};
+
 
 export const loginHandler = async (req, res) => {
     try {

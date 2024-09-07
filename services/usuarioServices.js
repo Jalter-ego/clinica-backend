@@ -4,7 +4,7 @@ import pool from "../config/pg.js";
 import bcryptjs from "bcryptjs"
 
 export class RepositorioUsuario {
-    static async create({ ci, nombre, email, password }) {
+    static async create({ ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, password }) {
         try {
             const { rows: [existeUsuario] } = await pool.query('SELECT * FROM usuarios WHERE ci = $1', [ci]);
 
@@ -14,14 +14,15 @@ export class RepositorioUsuario {
 
             const hashedPassword = await bcryptjs.hash(password, 10);
             const { rows: [user] } = await pool.query(
-                'INSERT INTO usuarios (ci, nombre, email, password) VALUES ($1, $2, $3, $4) RETURNING *',
-                [ci, nombre, email, hashedPassword]
+                'INSERT INTO usuarios (ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, password) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
+                [ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, hashedPassword]
             );
             return { user };
         } catch (error) {
             return { error: error.message };
         }
     }
+
     static async login({ ci, password }) {
         try {
             if (!ci || !password) {
