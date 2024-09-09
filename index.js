@@ -7,16 +7,21 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express();
-app.use(cors({
-    origin: 'http://localhost:5173', // Permitir solicitudes desde este origen
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    credentials: true, // Si necesitas enviar cookies o credenciales
-}));
-app.use(cors({
-    origin: 'http://localhost:5174', // Permitir solicitudes desde este origen
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
-    credentials: true, // Si necesitas enviar cookies o credenciales
-}));
+const whitelist = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175',
+    'http://localhost:5176', 'http://localhost:5177'];
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('No permitido por CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true,
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
