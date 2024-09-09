@@ -12,6 +12,11 @@ app.use(cors({
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
     credentials: true, // Si necesitas enviar cookies o credenciales
 }));
+app.use(cors({
+    origin: 'http://localhost:5174', // Permitir solicitudes desde este origen
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos permitidos
+    credentials: true, // Si necesitas enviar cookies o credenciales
+}));
 
 app.use(express.json());
 
