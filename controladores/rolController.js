@@ -1,3 +1,4 @@
+//controladores/rolController.js
 import { RepositorioRol } from "../services/rolesServices.js";
 import pool from '../config/pg.js'
 

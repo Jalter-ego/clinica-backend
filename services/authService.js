@@ -6,14 +6,6 @@ export const generarToken = (payload) => {
     return jwt.sign(payload, process.env.SECRET_KEY, { expiresIn: '1h' })
 }
 
-export const validarToken = (token) => {
-    try {
-        return jwt.verify(token, process.env.SECRET_KEY)
-    } catch (error) {
-        //
-    }
-}
-
 
 export const getUserFromToken = (token) => {
     try {

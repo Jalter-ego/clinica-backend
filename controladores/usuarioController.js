@@ -15,7 +15,6 @@ export const registerHandler = async (req, res) => {
         }
         const payload = {
             id: user.user.id,
-            ci: user.user.ci,
             rol_id: user.user.rol_id
         };
         const token = generarToken(payload);
