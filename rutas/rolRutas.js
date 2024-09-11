@@ -1,10 +1,12 @@
+//rutas/rolRutas.js
 import express from "express";
 import { crearRol, editarRol, eliminarRol, obtenerRoles } from "../controladores/rolController.js";
-export const rolesRutas = express.Router()
+import { validarToken, verificarPermiso } from "../services/middleware.js";
+export const rolesRutas = express.Router();
 
-rolesRutas.use(express.json())
-//rutas
-rolesRutas.post("/roles/crear", crearRol)
-rolesRutas.delete("/roles/eliminar", eliminarRol)
-rolesRutas.get("/roles/obtenerRoles", obtenerRoles)
-rolesRutas.put("/roles/editar/:id", editarRol)
+rolesRutas.use(express.json());
+
+rolesRutas.post("/roles/crear", validarToken, verificarPermiso('crear_rol'), crearRol);
+rolesRutas.delete("/roles/eliminar", validarToken, verificarPermiso('eliminar_rol'), eliminarRol);
+rolesRutas.get("/roles/obtenerRoles", validarToken, obtenerRoles);
+rolesRutas.put("/roles/editar/:id", validarToken, verificarPermiso('editar_rol'), editarRol);
