@@ -37,3 +37,16 @@ BEFORE INSERT ON usuarios
 FOR EACH ROW
 EXECUTE FUNCTION assign_default_role();
 
+CREATE TABLE permisos (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(255) NOT NULL UNIQUE
+);
+CREATE TABLE roles_permisos (
+    rol_id INT NOT NULL,
+    permiso_id INT NOT NULL,
+    PRIMARY KEY (rol_id, permiso_id),
+    FOREIGN KEY (rol_id) REFERENCES roles(id) ON DELETE CASCADE,
+    FOREIGN KEY (permiso_id) REFERENCES permisos(id) ON DELETE CASCADE
+);
+
+

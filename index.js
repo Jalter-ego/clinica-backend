@@ -4,6 +4,7 @@ import { autenticacion } from './rutas/usuarioRutas.js';
 import { rolesRutas } from './rutas/rolRutas.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { permisosRutas } from './rutas/permisosRutas.js';
 dotenv.config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use(express.json());
 
 app.use(autenticacion)
 app.use(rolesRutas)
+app.use(permisosRutas)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
