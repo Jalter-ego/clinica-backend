@@ -50,3 +50,34 @@ CREATE TABLE roles_permisos (
 );
 
 
+
+/*----------agregado----------*/
+
+
+
+CREATE TABLE empleado (
+    id SERIAL PRIMARY KEY,
+    telefono VARCHAR(10) NOT NULL,
+    direccion VARCHAR(50) NOT NULL,
+    fecha_contratacion DATE NOT NULL,
+    usuario_id INTEGER REFERENCES usuarios(id),
+    profesiones_id INTEGER REFERENCES profesiones(id)
+);
+
+CREATE TABLE especialidades (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE empleado_especialidades (
+    empleado_id INT REFERENCES empleado(id) ON DELETE CASCADE,
+    especialidad_id INT REFERENCES especialidades(id) ON DELETE CASCADE,
+    PRIMARY KEY (empleado_id, especialidad_id)
+);
+
+CREATE TABLE profesiones (
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(20) NOT NULL
+);
+
+
