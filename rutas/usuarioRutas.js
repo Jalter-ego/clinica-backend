@@ -1,12 +1,13 @@
 import express from "express";
 import pool from "../config/pg.js";
-import { registerHandler, loginHandler, eliminarUsuario, getUsuarios, getUsuario } from '../controladores/usuarioController.js'
-import { validarToken } from "../services/middleware.js";
+import { registerHandler, loginHandler, eliminarUsuario } from '../controladores/usuarioController.js'
+import { validateCreate } from '../validators/users.js'
 export const autenticacion = express.Router()//creando un enrutador
+
 
 autenticacion.use(express.json())
 
-autenticacion.post("/usuarios/registrarse", registerHandler)
+autenticacion.post("/usuarios/registrarse", validateCreate, registerHandler)
 autenticacion.post("/usuarios/login", loginHandler)
 autenticacion.delete("/usuarios/eliminar", eliminarUsuario)
 autenticacion.get("/usuarios/obtenerUsuarios", getUsuarios)
