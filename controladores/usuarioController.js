@@ -1,6 +1,7 @@
 //backend/controladores/UsuarioController
 import { RepositorioUsuario } from "../services/usuarioServices.js"
-import { generarToken, getUserFromToken } from "../services/authService.js";
+import { generarToken } from "../services/authService.js";
+import pool from "../config/pg.js"
 
 export const registerHandler = async (req, res) => {
     try {
@@ -37,10 +38,7 @@ export const loginHandler = async (req, res) => {
 
         const user = result.user
         const payload = {
-            id: user._id,
             ci: user.ci,
-            nombre: user.nombre,
-            rol_id: user.rol_id
         }
         const token = generarToken(payload)
 
@@ -69,19 +67,31 @@ export const eliminarUsuario = async (req, res) => {
     }
 }
 
-export const verificarToken = async (req, res) => {
+export const getUsuarios = async (req, res) => {
     try {
-        const token = req.headers['authorization']?.split(' ')[1];
-        const userData = getUserFromToken(token)
-        if (userData) {
-            // Devuelve la información del usuario
-            res.json({ nombre: userData.nombre, role: userData.role });
-        } else {
-            // Token inválido
-            res.status(401).json({ message: 'Unauthorized' });
+        const { rows: usuarios } = await pool.query('select * from usuarios')
+        if (!usuarios) {
+            return { error: "no existe usuarios" }
         }
-    } catch (error) {
-
+        res.json({ usuarios })
+    } catch (err) {
+        res.status(500).json({ error: err.message });
     }
 }
+
+export const getUsuario = async (req, res) => {
+    try {
+        const usuarioCi = req.usuarioCi
+        console.log(usuarioCi)
+
+        const { rows: [usuario] } = await pool.query('select * from usuarios where ci= $1', [usuarioCi])
+        if (!usuario) {
+            return res.status(404).json({ error: "No existe el usuario" });
+        }
+        res.json(usuario)
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
 
