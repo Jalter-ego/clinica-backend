@@ -67,28 +67,27 @@ export const eliminarUsuario = async (req, res) => {
     }
 }
 
-export const getUsuarios = async (req, res) => {
+export const obtenerUsuarios = async (req, res) => {
     try {
-        const { rows: usuarios } = await pool.query('select * from usuarios')
-        if (!usuarios) {
-            return { error: "no existe usuarios" }
+        const result = await RepositorioUsuario.getUsuarios()
+        if (result.error) {
+            return res.status(400).json({ msg: result.error })
         }
-        res.json({ usuarios })
+        res.json(result.usuarios)
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 }
 
-export const getUsuario = async (req, res) => {
+export const obtenerUsuario = async (req, res) => {
     try {
         const usuarioCi = req.usuarioCi
-        console.log(usuarioCi)
+        const result = await RepositorioUsuario.getUsuario({ usuarioCi })
 
-        const { rows: [usuario] } = await pool.query('select * from usuarios where ci= $1', [usuarioCi])
-        if (!usuario) {
-            return res.status(404).json({ error: "No existe el usuario" });
+        if (result.error) {
+            return res.status(400).json({ msg: result.error })
         }
-        res.json(usuario)
+        res.json(result.usuario)
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

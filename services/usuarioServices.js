@@ -1,5 +1,4 @@
 //backen/services/usuarioServices
-import { query } from "express";
 import pool from "../config/pg.js";
 import bcryptjs from "bcryptjs"
 
@@ -67,5 +66,28 @@ export class RepositorioUsuario {
 
     }
 
+    static async getUsuarios() {
+        try {
+            const { rows: usuarios } = await pool.query('select * from usuarios')
+            if (!usuarios) {
+                return { error: "no existen usuarios" }
+            }
+            return { usuarios }
+        } catch (err) {
+            return { error: err.message }
+        }
+    }
+
+    static async getUsuario({ usuarioCi }) {
+        try {
+            const { rows: [usuario] } = await pool.query('select * from usuarios where ci= $1', [usuarioCi])
+            if (!usuario) {
+                return { error: "no existe el usuario" }
+            }
+            return { usuario }
+        } catch (err) {
+            return { error: err.message }
+        }
+    }
 
 }

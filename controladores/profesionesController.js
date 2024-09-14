@@ -1,5 +1,4 @@
 import { RepositorioProfesiones } from "../services/profesionesServices.js";
-import pool from '../config/pg.js'
 
 
 export const crearProfesiones = async (req, res) => {
@@ -30,7 +29,7 @@ export const editarProfesiones = async (req, res) => {
     }
 
 
-    
+
 };
 
 export const listarProfesiones = async (req, res) => {
