@@ -77,7 +77,7 @@ CREATE TABLE empleado_especialidades (
 
 CREATE TABLE profesiones (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(20) NOT NULL
+    nombre VARCHAR(50) NOT NULL
 );
 
 

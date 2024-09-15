@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import { permisosRutas } from './rutas/permisosRutas.js';
 import { profesionRutas } from './rutas/profesionesRutas.js';
+import { especialidadRutas } from './rutas/especialidades.js';
 dotenv.config();
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(autenticacion)
 app.use(rolesRutas)
 app.use(permisosRutas)
 app.use(profesionRutas)
+app.use(especialidadRutas)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
