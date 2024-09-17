@@ -4,8 +4,8 @@ import pool from '../config/pg.js'
 
 export const crearRol = async (req, res) => {
     try {
-        const { nombre, permisos } = req.body
-        const result = await RepositorioRol.crear({ nombre, permisos })
+        const { nombre } = req.body
+        const result = await RepositorioRol.crear({ nombre })
 
         if (result.error) {
             return res.status(400).json({ msg: result.error });
@@ -33,9 +33,8 @@ export const eliminarRol = async (req, res) => {
 
 export const editarRol = async (req, res) => {
     try {
-        const { id } = req.params;
-        const { nombre, permisos } = req.body;
-        const result = await RepositorioRol.editar({ id, nombre, permisos })
+        const { id, nombre } = req.body;
+        const result = await RepositorioRol.editar({ id, nombre })
 
         if (result.error) {
             return res.status(400).json({ msg: result.error })
@@ -54,5 +53,32 @@ export const obtenerRoles = async (req, res) => {
 
     } catch (err) {
         res.status(500).json({ error: err.message });
+    }
+}
+
+export const agregarPermisos = async (req, res) => {
+    try {
+        const { idRol, permisos } = req.body
+        const result = await RepositorioRol.agregarPermisos({ idRol, permisos })
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+
+        // Retornar el resultado con el rol y sus permisos
+        return res.status(200).json(result);
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+}
+
+export const getRolesPermisos = async (req, res) => {
+    try {
+        const result = await RepositorioRol.getRolesPermisos()
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+        return res.status(200).json(result);
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
     }
 }
