@@ -16,6 +16,6 @@ autenticacion.get("/usuarios/obtenerUsuario", obtenerUsuario)
 autenticacion.get("/usuarios/obtenerUsuarioToken", validarToken, obtenerUsuarioToken)
 
 autenticacion.get('/', async (req, res) => {
-    const result = await pool.query('SELECT * FROM usuarios WHERE ci = $1', ['127'])
+    const result = await pool.query('SELECT * FROM usuarios WHERE ci = $1', ['123'])
     return res.json(result.rows[0])
 })
