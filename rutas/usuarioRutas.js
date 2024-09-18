@@ -12,7 +12,7 @@ autenticacion.post("/usuarios/registrarse", validateCreate, registerHandler)
 autenticacion.post("/usuarios/login", loginHandler)
 autenticacion.delete("/usuarios/eliminar", eliminarUsuario)
 autenticacion.get("/usuarios/obtenerUsuarios", obtenerUsuarios)
-autenticacion.get("/usuarios/obtenerUsuario", validarToken, obtenerUsuario)
+autenticacion.get("/usuarios/obtenerUsuario",validarToken, obtenerUsuario)
 
 autenticacion.get('/', async (req, res) => {
     const result = await pool.query('SELECT * FROM usuarios WHERE ci = $1', ['127'])

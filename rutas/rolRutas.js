@@ -6,7 +6,8 @@ export const rolesRutas = express.Router();
 
 rolesRutas.use(express.json());
 
-rolesRutas.post("/roles/crear", validarToken, verificarPermiso('crear_rol'), crearRol);
+//rolesRutas.post("/roles/crear", validarToken, verificarPermiso('crear_rol'), crearRol);
+rolesRutas.post("/roles/crear", crearRol);
 rolesRutas.delete("/roles/eliminar", validarToken, verificarPermiso('eliminar_rol'), eliminarRol);
 rolesRutas.get("/roles/obtenerRoles", validarToken, obtenerRoles);
 rolesRutas.put("/roles/editar/:id", validarToken, verificarPermiso('editar_rol'), editarRol);
