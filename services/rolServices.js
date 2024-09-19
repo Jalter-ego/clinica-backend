@@ -52,13 +52,21 @@ export class RepositorioRol {
             if (!existeRol) {
                 return { error: "No existe el rol" };
             }
-            // Verificar e insertar permisos
+            // 1. Eliminar todos los permisos actuales del rol
+            await pool.query('DELETE FROM roles_permisos WHERE rol_id = $1', [idRol]);
+
+            // 2. Insertar los nuevos permisos
             for (const permiso of permisos) {
-                const { rows: [permisoExistente] } = await pool.query('SELECT * FROM permisos WHERE id = $1', [permiso]);
+                const { id } = permiso;
+
+                // Verificar que el permiso existe
+                const { rows: [permisoExistente] } = await pool.query('SELECT * FROM permisos WHERE id = $1', [id]);
                 if (!permisoExistente) {
-                    return { error: `El permiso con id ${permiso} no existe` };
+                    return { error: `El permiso con id ${id} no existe` };
                 }
-                await pool.query('INSERT INTO roles_permisos (rol_id, permiso_id) VALUES ($1, $2)', [idRol, permiso]);
+
+                // Insertar el nuevo permiso para el rol
+                await pool.query('INSERT INTO roles_permisos (rol_id, permiso_id) VALUES ($1, $2)', [idRol, id]);
             }
 
             const { rows: [rolConPermisos] } = await pool.query(`

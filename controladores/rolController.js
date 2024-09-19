@@ -1,5 +1,5 @@
 //controladores/rolController.js
-import { RepositorioRol } from "../services/rolesServices.js";
+import { RepositorioRol } from "../services/rolServices.js";
 import pool from '../config/pg.js'
 
 export const crearRol = async (req, res) => {

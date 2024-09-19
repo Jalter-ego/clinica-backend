@@ -12,7 +12,8 @@ CREATE TABLE usuarios (
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
     rol_id INTEGER REFERENCES roles(id),
-    estado BOOLEAN DEFAULT true
+    estado BOOLEAN DEFAULT true,
+    telefono VARCHAR(10) NOT NULL,
 );
 
 CREATE OR REPLACE FUNCTION assign_default_role()
@@ -61,7 +62,8 @@ CREATE TABLE empleado (
     direccion VARCHAR(50) NOT NULL,
     fecha_contratacion DATE NOT NULL,
     usuario_id INTEGER REFERENCES usuarios(id),
-    profesiones_id INTEGER REFERENCES profesiones(id)
+    profesiones_id INTEGER REFERENCES profesiones(id),
+    estado BOOLEAN DEFAULT false
 );
 
 CREATE TABLE especialidades (
