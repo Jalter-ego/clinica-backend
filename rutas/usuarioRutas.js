@@ -15,7 +15,7 @@ usuarioRutas.get("/usuarios/obtenerUsuarios", obtenerUsuarios)
 usuarioRutas.get("/usuarios/obtenerUsuario", obtenerUsuario)
 usuarioRutas.get("/usuarios/obtenerUsuarioToken", validarToken, obtenerUsuarioToken)
 
-autenticacion.get('/', async (req, res) => {
+usuarioRutas.get('/', async (req, res) => {
     const result = await pool.query('SELECT * FROM usuarios WHERE ci = $1', ['123'])
     return res.json(result.rows[0])
 })
