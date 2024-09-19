@@ -5,7 +5,6 @@ import { validateCreate } from '../validators/users.js'
 import { validarToken } from "../services/middleware.js";
 export const usuarioRutas = express.Router()//creando un enrutador
 
-
 usuarioRutas.use(express.json())
 
 usuarioRutas.post("/usuarios/registrarse", validateCreate, registerHandler)
