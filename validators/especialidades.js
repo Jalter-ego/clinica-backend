@@ -1,10 +1,10 @@
-import {check} from 'express-validator'
+import { check } from 'express-validator'
 import { validateResult } from '../helpers/validateHelper.js'
 
-export const validateCreate=[
+export const validateCreate = [
     check('nombre').exists().not().isEmpty(),
-    (req,res,next)=>{
-        validateResult(req,res,next)
+    (req, res, next) => {
+        validateResult(req, res, next)
     }
 
 ]

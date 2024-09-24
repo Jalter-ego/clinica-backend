@@ -81,8 +81,22 @@ export const obtenerUsuarios = async (req, res) => {
 
 export const obtenerUsuario = async (req, res) => {
     try {
-        const usuarioCi = req.usuarioCi
-        const result = await RepositorioUsuario.getUsuario({ usuarioCi })
+        const { ci } = req.body
+        const result = await RepositorioUsuario.getUsuario({ ci })
+
+        if (result.error) {
+            return res.status(400).json({ msg: result.error })
+        }
+        res.json(result.usuario)
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+export const obtenerUsuarioToken = async (req, res) => {
+    try {
+        const ci = req.usuarioCi
+        const result = await RepositorioUsuario.getUsuario({ ci })
 
         if (result.error) {
             return res.status(400).json({ msg: result.error })

@@ -78,9 +78,9 @@ export class RepositorioUsuario {
         }
     }
 
-    static async getUsuario({ usuarioCi }) {
+    static async getUsuario({ ci }) {
         try {
-            const { rows: [usuario] } = await pool.query('select * from usuarios where ci= $1', [usuarioCi])
+            const { rows: [usuario] } = await pool.query('select * from usuarios where ci= $1', [ci])
             if (!usuario) {
                 return { error: "no existe el usuario" }
             }

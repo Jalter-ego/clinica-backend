@@ -27,7 +27,7 @@ export class RepositorioEspecialidades {
             if (!especialidadExistente) {
                 return { error: "No existe una especialidad con ese ID" };
             }
-    
+
             const { rows: [especialidad] } = await pool.query(
                 'UPDATE especialidades SET nombre = $1 WHERE id = $2 RETURNING *',
                 [nombre, id]
@@ -37,7 +37,7 @@ export class RepositorioEspecialidades {
             return { error: err.message }
         }
     }
-    
+
     static async listar() {
         try {
             const { rows: especialidad } = await pool.query('SELECT * FROM especialidades');
@@ -54,13 +54,13 @@ export class RepositorioEspecialidades {
             if (!especialidadExistente) {
                 return { error: "No existe una especialidad con ese ID" };
             }
-    
+
             await pool.query('DELETE FROM especialidades WHERE id = $1', [id]);
             return { msg: "especialidad eliminada correctamente" };
         } catch (err) {
             return { error: err.message };
         }
     }
-    
-    
+
+
 }

@@ -1,9 +1,11 @@
 //backend/index.js
 import express from 'express';
-import { autenticacion } from './rutas/usuarioRutas.js';
-import { rolesRutas } from './rutas/rolRutas.js';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import { usuarioRutas } from './rutas/usuarioRutas.js';
+import { rolesRutas } from './rutas/rolRutas.js';
+import { especialidadRutas } from './rutas/especialidadesRutas.js';
+import { empleadoRutas } from './rutas/empleadoRutas.js';
 import { permisosRutas } from './rutas/permisosRutas.js';
 import { profesionRutas } from './rutas/profesionesRutas.js';
 import { especialidadRutas } from './rutas/especialidadesRutas.js';
@@ -28,7 +30,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use(autenticacion)
+app.use(usuarioRutas)
 app.use(rolesRutas)
 app.use(permisosRutas)
 app.use(profesionRutas)
