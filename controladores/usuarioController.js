@@ -81,7 +81,7 @@ export const obtenerUsuarios = async (req, res) => {
 
 export const obtenerUsuario = async (req, res) => {
     try {
-        const { ci } = req.body
+        const { ci } = req.query
         const result = await RepositorioUsuario.getUsuario({ ci })
 
         if (result.error) {
