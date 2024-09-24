@@ -81,4 +81,8 @@ CREATE TABLE profesiones (
     nombre VARCHAR(50) NOT NULL
 );
 
-
+CREATE TABLE paciente (
+    id SERIAL PRIMARY KEY,
+    direccion VARCHAR(50) NOT NULL,
+    usuario_id INTEGER REFERENCES usuarios(id),
+);
