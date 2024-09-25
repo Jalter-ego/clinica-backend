@@ -78,8 +78,11 @@ export const loginHandler = async (req, res) => {
         // Crear el payload que se almacenará en el token
         const payload = {
             ci: user.ci,
+            nombre: user.nombre,
+            email: user.email,
+            telefono: user.telefono,
             rol,
-            permisos, // Añadir los permisos al payload
+            permisos,
         };
 
         // Generar el token con el payload que incluye los permisos
