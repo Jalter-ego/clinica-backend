@@ -3,6 +3,7 @@ import { RepositorioUsuario } from "../services/usuarioServices.js"
 import { generarToken } from "../services/authService.js";
 import { RepositorioPermiso } from "../services/permisoServices.js";
 import jwt from 'jsonwebtoken'
+import { RepositorioRol } from "../services/rolServices.js";
 
 export const registerHandler = async (req, res) => {
     try {
@@ -27,9 +28,16 @@ export const registerHandler = async (req, res) => {
 
         const permisos = permisosResult.permisos;
 
-        // Crear el payload para el token
+        const rolResutl = await RepositorioRol.getRol({ ci })
+        if (rolResutl.error) {
+            return res.status(400).json({ mss: rolResutl.error });
+        }
+        const rol = rolResutl.rol
+
+        // Crear el payload que se almacenará en el token
         const payload = {
             ci: user.ci,
+            rol,
             permisos, // Añadir los permisos al payload
         };
         const token = generarToken(payload);
@@ -59,12 +67,18 @@ export const loginHandler = async (req, res) => {
         if (permisosResult.error) {
             return res.status(400).json({ mss: permisosResult.error });
         }
-
         const permisos = permisosResult.permisos
+
+        const rolResutl = await RepositorioRol.getRol({ ci })
+        if (rolResutl.error) {
+            return res.status(400).json({ mss: rolResutl.error });
+        }
+        const rol = rolResutl.rol
 
         // Crear el payload que se almacenará en el token
         const payload = {
             ci: user.ci,
+            rol,
             permisos, // Añadir los permisos al payload
         };
 

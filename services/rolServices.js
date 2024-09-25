@@ -118,4 +118,15 @@ export class RepositorioRol {
         }
     }
 
+    static async getRol({ ci }) {
+        try {
+            const text = `SELECT roles.nombre FROM roles,usuarios 
+            WHERE roles.id = usuarios.rol_id and usuarios.ci = $1`
+            const { rows: [rol] } = await pool.query(text, [ci])
+            return { rol }
+        } catch (err) {
+            return { error: err.message };
+        }
+    }
+
 }
