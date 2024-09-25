@@ -5,19 +5,26 @@ import bcryptjs from "bcryptjs"
 export class RepositorioUsuario {
     static async create({ ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, password }) {
         try {
+            // Verificar si el usuario ya existe por su CI
             const { rows: [existeUsuario] } = await pool.query('SELECT * FROM usuarios WHERE ci = $1', [ci]);
 
             if (existeUsuario) {
                 return { error: "Ya existe un usuario con esta cédula de identidad" };
             }
 
+            // Hashear el password
             const hashedPassword = await bcryptjs.hash(password, 10);
+
+            // Insertar el nuevo usuario
             const { rows: [user] } = await pool.query(
                 'INSERT INTO usuarios (ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, password) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
                 [ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, hashedPassword]
             );
+
+            // Devolver el usuario creado
             return { user };
         } catch (error) {
+            // Manejar cualquier error que ocurra en la base de datos
             return { error: error.message };
         }
     }
@@ -89,5 +96,55 @@ export class RepositorioUsuario {
             return { error: err.message }
         }
     }
+
+    // Repositorio: actualiza el usuario en la base de datos
+    static async edit({ id, ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento,
+        email, password, rol_id, estado, telefono, genero }) {
+        try {
+            const consulta = `
+            UPDATE usuarios
+            SET
+                ci = $1,
+                nombre = $2,
+                apellido_paterno = $3,
+                apellido_materno = $4,
+                fecha_nacimiento = $5,
+                email = $6,
+                password = $7,
+                rol_id = $8,
+                estado = $9,
+                telefono = $10,
+                genero = $11
+            WHERE id = $12
+            RETURNING *
+            `;
+            const hashedPassword = await bcryptjs.hash(password, 10);
+            const values = [
+                ci,
+                nombre,
+                apellido_paterno,
+                apellido_materno,
+                fecha_nacimiento,
+                email,
+                hashedPassword,
+                rol_id,
+                estado,
+                telefono,
+                genero,
+                id
+            ];
+
+            const { rows } = await pool.query(consulta, values);
+
+            if (rows.length === 0) {
+                return { error: "No se encontró el usuario con el id proporcionado" };
+            }
+
+            return { usuario: rows[0] };
+        } catch (err) {
+            return { error: err.message };
+        }
+    }
+
 
 }
