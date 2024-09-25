@@ -58,7 +58,6 @@ CREATE TABLE roles_permisos (
 
 CREATE TABLE empleado (
     id SERIAL PRIMARY KEY,
-    telefono VARCHAR(10) NOT NULL,
     direccion VARCHAR(50) NOT NULL,
     fecha_contratacion DATE NOT NULL,
     usuario_id INTEGER REFERENCES usuarios(id),
@@ -79,7 +78,11 @@ CREATE TABLE empleado_especialidades (
 
 CREATE TABLE profesiones (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(20) NOT NULL
+    nombre VARCHAR(50) NOT NULL
 );
 
-
+CREATE TABLE paciente (
+    id SERIAL PRIMARY KEY,
+    direccion VARCHAR(50) NOT NULL,
+    usuario_id INTEGER REFERENCES usuarios(id),
+);

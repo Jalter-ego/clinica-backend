@@ -61,8 +61,22 @@ export const obtenerEmpleado = async (req, res) => {
 
 export const editarEmpleado = async (req, res) => {
     try {
-        const { id, direccion, fecha_contratacion, estadoo, ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, telefono, estado, genero, profesiones_id } = req.body;
-        const result = await RepositorioEmpleado.editar({ id, direccion, fecha_contratacion, estadoo, ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, telefono, estado, genero, profesiones_id });
+        const { id, direccion, fecha_contratacion, estadoo, ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, telefono, estado, genero, profesiones_id,roles_id} = req.body;
+        const result = await RepositorioEmpleado.editar({ id, direccion, fecha_contratacion, estadoo, ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email, telefono, estado, genero, profesiones_id,roles_id });
+
+        if (result.error) {
+            return res.status(400).json({ msg: result.error });
+        }
+        res.json(result.empleado);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+};
+
+export const eliminarEmpleado = async (req, res) => {
+    try {
+        const { id } = req.body;
+        const result = await RepositorioEmpleado.eliminar({ id });
 
         if (result.error) {
             return res.status(400).json({ msg: result.error });

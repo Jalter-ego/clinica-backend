@@ -9,7 +9,7 @@ export class RepositorioEmpleado {
                 return { error: "No existe un Usuario con ese CI" };
             }
 
-            const { rows: [usuario] } = await pool.query(`SELECT usuarios.id,ci,usuarios.nombre,apellido_paterno,email,
+            const { rows: [usuario] } = await pool.query(`SELECT usuarios.id,ci,usuarios.nombre,apellido_paterno,apellido_materno,email,
             fecha_nacimiento,telefono,genero,roles.nombre as rol_nombre FROM usuarios, 
             roles WHERE rol_id=roles.id and ci = $1`, [ci]);
             return { usuario }
@@ -65,11 +65,12 @@ export class RepositorioEmpleado {
                     empleado.direccion,
                     empleado.fecha_contratacion,
                     profesiones.nombre As profesion,
-                    empleado.estadoo
+                    empleado.estadoo,
+                    roles.nombre AS rol
                 FROM 
-                    empleado, usuarios, profesiones
+                    empleado, usuarios, profesiones, roles
                 WHERE 
-                    empleado.usuario_id = usuarios.id and profesiones_id=profesiones.id
+                    empleado.usuario_id = usuarios.id and profesiones_id=profesiones.id and usuarios.rol_id=roles.id
             `);
             return { empleado };
         } catch (err) {
@@ -82,7 +83,7 @@ export class RepositorioEmpleado {
         try {
             const { rows: [EmpleadoExistente] } = await pool.query('SELECT * FROM empleado WHERE id = $1', [id]);
             if (!EmpleadoExistente) {
-                return { error: "No existe el empleado no existe" };
+                return { error: "No existe el empleado " };
             }
 
             const { rows: [empleado] } = await pool.query(`
@@ -100,11 +101,12 @@ export class RepositorioEmpleado {
                     empleado.direccion,
                     empleado.fecha_contratacion,
                     profesiones.nombre As profesion,
-                    empleado.estadoo
+                    empleado.estadoo,
+                    roles.nombre as rol
                 FROM 
-                    empleado, usuarios, profesiones
+                    empleado, usuarios, profesiones, roles
                 WHERE 
-                    empleado.id=$1 and empleado.usuario_id = usuarios.id and  profesiones_id=profesiones.id
+                    empleado.id=$1 and empleado.usuario_id = usuarios.id and  profesiones_id = profesiones.id and usuarios.rol_id=roles.id
             `, [id]);
             return { empleado }
         } catch (err) {
@@ -114,7 +116,7 @@ export class RepositorioEmpleado {
 
 
     static async editar({ id, direccion, fecha_contratacion, estadoo, ci, nombre, apellido_paterno,
-        apellido_materno, fecha_nacimiento, email, telefono, estado, genero, profesiones_id }) {
+        apellido_materno, fecha_nacimiento, email, telefono, estado, genero, profesiones_id,roles_id }) {
         try {
             // Verificar si el empleado existe
             const { rows: [EmpleadoExistente] } = await pool.query('SELECT * FROM empleado WHERE id = $1', [id]);
@@ -134,14 +136,36 @@ export class RepositorioEmpleado {
             await pool.query(`
                 UPDATE usuarios
                 SET ci = $1, nombre = $2, apellido_paterno = $3, apellido_materno = $4, 
-                fecha_nacimiento = $5, email = $6, telefono = $7, estado = $8, genero = $9
-                WHERE id = $10
+                fecha_nacimiento = $5, email = $6, telefono = $7, estado = $8, genero = $9, rol_id = $10
+                WHERE id = $11
             `, [ci, nombre, apellido_paterno, apellido_materno, fecha_nacimiento, email,
-                telefono, estado, genero, empleado.usuario_id]);
+                telefono, estado, genero,roles_id, empleado.usuario_id]);
 
             return { empleado };
         } catch (err) {
             return { error: err.message };
         }
     }
+
+    static async eliminar({ id }) {
+        try {
+            // Verificar si el empleado existe
+            const { rows: [EmpleadoExistente] } = await pool.query('SELECT * FROM empleado WHERE id = $1', [id]);
+            if (!EmpleadoExistente) {
+                return { error: "El empleado no existe" };
+            }
+    
+            // Eliminar al empleado de la tabla 'empleado'
+            const { rows: [empleado] } = await pool.query(`
+                DELETE FROM empleado
+                WHERE id = $1
+                RETURNING *
+            `, [id]);
+    
+            return { empleado };
+        } catch (err) {
+            return { error: err.message };
+        }
+    }
+    
 }

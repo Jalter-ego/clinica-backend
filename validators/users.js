@@ -9,7 +9,7 @@ export const validateCreate=[
     check('nombre').exists().not().isEmpty(),
     check('apellido_paterno').exists().not().isEmpty(),
     check('apellido_materno').exists().not().isEmpty(),
-    check('fecha_nacimiento').exists().isDate().not().isEmpty(),
+    check('fecha_nacimiento').exists().not().isEmpty(),
     check('email').exists().isEmail().not().isEmpty(),
     (req,res,next)=>{
         validateResult(req,res,next)
