@@ -14,14 +14,13 @@ dotenv.config();
 
 const app = express();
 
-// Agrega tu dominio de Netlify a la lista blanca
 const whitelist = [
-    'http://localhost:5173', 
-    'http://localhost:5174', 
+    'http://localhost:5173',
+    'http://localhost:5174',
     'http://localhost:5175',
-    'http://localhost:5176', 
+    'http://localhost:5176',
     'http://localhost:5177',
-    'https://clinicacoftalmologica.netlify.app'  // Añade aquí tu dominio de Netlify
+    'https://clinicacoftalmologica.netlify.app'
 ];
 
 const corsOptions = {
@@ -33,7 +32,7 @@ const corsOptions = {
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true, // Si necesitas enviar cookies o encabezados de autenticación
+    credentials: true,
 };
 
 app.use(cors(corsOptions));
