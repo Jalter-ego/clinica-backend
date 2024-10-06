@@ -9,11 +9,21 @@ import { empleadoRutas } from './rutas/empleadoRutas.js';
 import { permisosRutas } from './rutas/permisosRutas.js';
 import { profesionRutas } from './rutas/profesionesRutas.js';
 import { pacienteRutas } from './rutas/pacienteRutas.js';
+
 dotenv.config();
 
 const app = express();
-const whitelist = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175',
-    'http://localhost:5176', 'http://localhost:5177'];
+
+// Agrega tu dominio de Netlify a la lista blanca
+const whitelist = [
+    'http://localhost:5173', 
+    'http://localhost:5174', 
+    'http://localhost:5175',
+    'http://localhost:5176', 
+    'http://localhost:5177',
+    'https://clinicacoftalmologica.netlify.app'  // Añade aquí tu dominio de Netlify
+];
+
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -23,21 +33,23 @@ const corsOptions = {
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true,
+    credentials: true, // Si necesitas enviar cookies o encabezados de autenticación
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use(usuarioRutas)
-app.use(rolesRutas)
-app.use(permisosRutas)
-app.use(profesionRutas)
-app.use(especialidadRutas)
-app.use(empleadoRutas)
-app.use(pacienteRutas)
+// Rutas
+app.use(usuarioRutas);
+app.use(rolesRutas);
+app.use(permisosRutas);
+app.use(profesionRutas);
+app.use(especialidadRutas);
+app.use(empleadoRutas);
+app.use(pacienteRutas);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto http://localhost:${port}`);
 });
+
