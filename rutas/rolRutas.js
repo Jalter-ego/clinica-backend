@@ -1,7 +1,6 @@
 //rutas/rolRutas.js
 import express from "express";
 import { agregarPermisos, crearRol, editarRol, eliminarRol, getRolesPermisos, obtenerRoles, rolByUser } from "../controladores/rolController.js";
-import { validarToken, verificarPermiso } from "../services/middleware.js";
 export const rolesRutas = express.Router();
 
 rolesRutas.use(express.json());

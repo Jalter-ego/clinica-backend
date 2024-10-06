@@ -145,6 +145,31 @@ export class RepositorioUsuario {
             return { error: err.message };
         }
     }
+    static async editUserName({ ci, nombre, apellido_paterno, apellido_materno }) {
+        try {
+            const consulta = `
+            UPDATE usuarios
+            SET
+                nombre = $1,
+                apellido_paterno = $2,
+                apellido_materno = $3
+            WHERE ci = $4
+            RETURNING *
+            `;
+            const values = [
+                nombre,
+                apellido_paterno,
+                apellido_materno,
+                ci
+            ];
+
+            const { rows } = await pool.query(consulta, values);
+
+            return { usuario: rows[0] };
+        } catch (err) {
+            return { error: err.message };
+        }
+    }
 
 
 }

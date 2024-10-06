@@ -37,8 +37,13 @@ export const registerHandler = async (req, res) => {
         // Crear el payload que se almacenará en el token
         const payload = {
             ci: user.ci,
+            nombre: user.nombre,
+            apellido_paterno: user.apellido_paterno,
+            apellido_materno: user.apellido_materno,
+            email: user.email,
+            telefono: user.telefono,
             rol,
-            permisos, // Añadir los permisos al payload
+            permisos,
         };
         const token = generarToken(payload);
 
@@ -79,6 +84,8 @@ export const loginHandler = async (req, res) => {
         const payload = {
             ci: user.ci,
             nombre: user.nombre,
+            apellido_paterno: user.apellido_paterno,
+            apellido_materno: user.apellido_materno,
             email: user.email,
             telefono: user.telefono,
             rol,
@@ -180,6 +187,21 @@ export const editUsuario = async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 };
+
+export const editUserName = async (req, res) => {
+    try {
+        const { ci, nombre, apellido_paterno, apellido_materno } = req.body
+        const result = await RepositorioUsuario.editUserName({ ci, nombre, apellido_paterno, apellido_materno })
+
+        if (!result.usuario) {
+            return res.status(404).json({ error: 'Usuario no encontrado' });
+        }
+
+        res.json(result.usuario)
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
 
 
 

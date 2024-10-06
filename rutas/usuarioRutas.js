@@ -1,6 +1,9 @@
 import express from "express";
 import pool from "../config/pg.js";
-import { registerHandler, loginHandler, eliminarUsuario, obtenerUsuarios, obtenerUsuario, obtenerUsuarioToken, editUsuario } from '../controladores/usuarioController.js'
+import {
+    registerHandler, loginHandler, eliminarUsuario, obtenerUsuarios, obtenerUsuario,
+    obtenerUsuarioToken, editUsuario, editUserName
+} from '../controladores/usuarioController.js'
 import { validateCreate } from '../validators/users.js'
 import { validarToken } from "../services/middleware.js";
 export const usuarioRutas = express.Router()//creando un enrutador
@@ -15,7 +18,5 @@ usuarioRutas.get("/usuarios/obtenerUsuarios", obtenerUsuarios)
 usuarioRutas.get("/usuarios/obtenerUsuario", obtenerUsuario)
 usuarioRutas.get("/usuarios/obtenerUsuarioToken", validarToken, obtenerUsuarioToken)
 
-usuarioRutas.get('/', async (req, res) => {
-    const result = await pool.query('SELECT * FROM usuarios WHERE ci = $1', ['123'])
-    return res.json(result.rows[0])
-})
+usuarioRutas.put("/usuarios/editUserName", editUserName)
+//usuarioRutas.put("/usuarios/editUserEmail",editUserEmail)
