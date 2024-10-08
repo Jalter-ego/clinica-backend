@@ -171,5 +171,36 @@ export class RepositorioUsuario {
         }
     }
 
+    static async verifyPassword({ ci, password }) {
+        try {
+            const queryText = 'SELECT * FROM usuarios WHERE ci = $1';
+            const result = await pool.query(queryText, [ci]);
+
+            if (result.rows.length === 0) {
+                throw new Error("Usuario con esta cédula de identidad no existe.");
+            }
+
+            const user = result.rows[0];
+            const esIgual = await bcryptjs.compare(password, user.password);
+            if (!esIgual) {
+                return { error: "contraseña incorrecta" }
+            }
+            return { msg: "contraseña correcta" }
+        } catch (err) {
+            return { error: err.message }
+        }
+    }
+
+    static async editUserPassword({ ci, newPassword }) {
+        try {
+            const hashedPassword = await bcryptjs.hash(newPassword, 10);
+            await pool.query(
+                `UPDATE usuarios set password = $1 where ci = $2 `, [hashedPassword, ci])
+            return ({ msg: "contraseña actualizada" })
+        } catch (err) {
+            return { error: err.message }
+        }
+    }
+
 
 }

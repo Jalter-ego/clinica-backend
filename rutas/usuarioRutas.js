@@ -2,7 +2,9 @@ import express from "express";
 import pool from "../config/pg.js";
 import {
     registerHandler, loginHandler, eliminarUsuario, obtenerUsuarios, obtenerUsuario,
-    obtenerUsuarioToken, editUsuario, editUserName
+    obtenerUsuarioToken, editUsuario, editUserName,
+    verifyPassword,
+    editUserPassword
 } from '../controladores/usuarioController.js'
 import { validateCreate } from '../validators/users.js'
 import { validarToken } from "../services/middleware.js";
@@ -19,4 +21,6 @@ usuarioRutas.get("/usuarios/obtenerUsuario", obtenerUsuario)
 usuarioRutas.get("/usuarios/obtenerUsuarioToken", validarToken, obtenerUsuarioToken)
 
 usuarioRutas.put("/usuarios/editUserName", editUserName)
+usuarioRutas.put("/usuarios/editUserPassword", editUserPassword)
+usuarioRutas.post("/usuarios/verifyPassword", verifyPassword)
 //usuarioRutas.put("/usuarios/editUserEmail",editUserEmail)

@@ -204,4 +204,31 @@ export const editUserName = async (req, res) => {
 }
 
 
+export const verifyPassword = async (req, res) => {
+    try {
+        const { ci, password } = req.body
+        const result = await RepositorioUsuario.verifyPassword({ ci, password })
+
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+        res.json({ msg: result.msg })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+export const editUserPassword = async (req, res) => {
+    try {
+        const { ci, newPassword } = req.body
+        const result = await RepositorioUsuario.editUserPassword({ ci, newPassword })
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+        res.json({ msg: result.msg })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
 
