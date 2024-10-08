@@ -60,6 +60,27 @@ export class RepositorioPermiso {
             return { error: err.message }
         }
     }
+
+    static async getPermisoByUser({ ci }) {
+        try {
+            const consulta = `SELECT permisos.id, permisos.nombre 
+                              FROM permisos
+                              INNER JOIN roles_permisos ON permisos.id = roles_permisos.permiso_id
+                              INNER JOIN usuarios ON usuarios.rol_id = roles_permisos.rol_id
+                              WHERE usuarios.ci = $1`;
+
+            const { rows: permisos } = await pool.query(consulta, [ci]);
+
+            if (permisos.length === 0) {
+                return { error: "No existen permisos para este usuario" };
+            }
+
+            return { permisos };
+        } catch (err) {
+            return { error: err.message };
+        }
+    }
+
 }
 
 

@@ -57,3 +57,16 @@ export const obtenerPermisos = async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 }
+
+export const obtenerPermiso = async (req, res) => {
+    try {
+        const { ci } = req.query
+        const result = await RepositorioPermiso.getPermisoByUser({ ci })
+        if (result.error) {
+            return res.status(400).json({ mss: result.error })
+        }
+        res.json(result.permisos)
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}

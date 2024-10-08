@@ -61,6 +61,4 @@ export class RepositorioEspecialidades {
             return { error: err.message };
         }
     }
-
-
 }
