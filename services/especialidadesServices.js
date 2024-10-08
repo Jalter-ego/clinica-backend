@@ -3,7 +3,7 @@ import pool from '../config/pg.js'
 
 export class RepositorioEspecialidades {
 
-    static async crear({ nombre }) {
+    static async crear({ nombre, tiempo_estimado }) {
         try {
             const { rows: [existeEspecialidades] } = await pool.query('SELECT * FROM especialidades WHERE nombre = $1', [nombre]);
             if (existeEspecialidades) {
@@ -11,8 +11,8 @@ export class RepositorioEspecialidades {
             }
 
             const { rows: [especialidad] } = await pool.query(
-                'INSERT INTO especialidades (nombre) VALUES ($1) RETURNING *',
-                [nombre]
+                'INSERT INTO especialidades (nombre, tiempo_estimado) VALUES ($1, $2) RETURNING *',
+                [nombre, tiempo_estimado]
             );
             return { especialidad }
         } catch (err) {
@@ -21,7 +21,7 @@ export class RepositorioEspecialidades {
     }
 
 
-    static async editar({ id, nombre }) {
+    static async editar({ id, nombre, tiempo_estimado }) {
         try {
             const { rows: [especialidadExistente] } = await pool.query('SELECT * FROM especialidades WHERE id = $1', [id]);
             if (!especialidadExistente) {
@@ -29,8 +29,8 @@ export class RepositorioEspecialidades {
             }
 
             const { rows: [especialidad] } = await pool.query(
-                'UPDATE especialidades SET nombre = $1 WHERE id = $2 RETURNING *',
-                [nombre, id]
+                'UPDATE especialidades SET nombre = $1, tiempo_estimado=$3 WHERE id = $2 RETURNING *',
+                [nombre, id, tiempo_estimado]
             );
             return { especialidad }
         } catch (err) {

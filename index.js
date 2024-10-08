@@ -9,11 +9,21 @@ import { empleadoRutas } from './rutas/empleadoRutas.js';
 import { permisosRutas } from './rutas/permisosRutas.js';
 import { profesionRutas } from './rutas/profesionesRutas.js';
 import { pacienteRutas } from './rutas/pacienteRutas.js';
+import { especialistasRutas } from './rutas/especialistasRutas.js';
+
 dotenv.config();
 
 const app = express();
-const whitelist = ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175',
-    'http://localhost:5176', 'http://localhost:5177'];
+
+const whitelist = [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5176',
+    'http://localhost:5177',
+    'https://clinicacoftalmologica.netlify.app'
+];
+
 const corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1 || !origin) {
@@ -29,15 +39,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
-app.use(usuarioRutas)
-app.use(rolesRutas)
-app.use(permisosRutas)
-app.use(profesionRutas)
-app.use(especialidadRutas)
-app.use(empleadoRutas)
-app.use(pacienteRutas)
+// Rutas
+app.use(usuarioRutas);
+app.use(rolesRutas);
+app.use(permisosRutas);
+app.use(profesionRutas);
+app.use(especialidadRutas);
+app.use(empleadoRutas);
+app.use(pacienteRutas);
+app.use(especialistasRutas);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto http://localhost:${port}`);
 });
+

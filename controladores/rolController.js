@@ -82,3 +82,16 @@ export const getRolesPermisos = async (req, res) => {
         return res.status(500).json({ error: err.message });
     }
 }
+
+export const rolByUser = async (req, res) => {
+    try {
+        const { ci } = req.query
+        const result = await RepositorioRol.getRol({ ci })
+        if (result.error) {
+            return res.status(400).json({ error: result.error });
+        }
+        return res.status(200).json(result.rol);
+    } catch (err) {
+        return res.status(500).json({ error: err.message });
+    }
+}

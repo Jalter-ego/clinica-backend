@@ -8,5 +8,5 @@ especialidadRutas.use(express.json())
 
 especialidadRutas.post("/especialidades/crear", validateCreate, crearEspecialidades)
 especialidadRutas.post("/especialidades/editar", validateCreate, editarEspecialides)
-especialidadRutas.get("/especialidades", listarEspecialidades);
+especialidadRutas.get("/especialidades/listar", listarEspecialidades);
 especialidadRutas.delete("/especialidades/eliminar", eliminarEspecialidades);

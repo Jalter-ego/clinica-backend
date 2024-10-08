@@ -3,8 +3,8 @@ import { RepositorioEspecialidades } from "../services/especialidadesServices.js
 
 export const crearEspecialidades = async (req, res) => {
     try {
-        const { nombre } = req.body
-        const result = await RepositorioEspecialidades.crear({ nombre })
+        const { nombre, tiempo_estimado } = req.body
+        const result = await RepositorioEspecialidades.crear({ nombre, tiempo_estimado })
 
         if (result.error) {
             return res.status(400).json({ msg: result.error });
@@ -18,8 +18,8 @@ export const crearEspecialidades = async (req, res) => {
 
 export const editarEspecialides = async (req, res) => {
     try {
-        const { id, nombre } = req.body;
-        const result = await RepositorioEspecialidades.editar({ id, nombre });
+        const { id, nombre, tiempo_estimado } = req.body;
+        const result = await RepositorioEspecialidades.editar({ id, nombre,tiempo_estimado });
 
         if (result.error) {
             return res.status(400).json({ msg: result.error });
