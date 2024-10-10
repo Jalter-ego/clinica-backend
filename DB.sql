@@ -87,3 +87,7 @@ CREATE TABLE paciente (
     direccion VARCHAR(50) NOT NULL,
     usuario_id INTEGER REFERENCES usuarios(id),
 );
+CREATE TABLE departamentos(
+    id SERIAL PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL
+)

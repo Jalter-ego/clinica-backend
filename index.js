@@ -10,6 +10,7 @@ import { permisosRutas } from './rutas/permisosRutas.js';
 import { profesionRutas } from './rutas/profesionesRutas.js';
 import { pacienteRutas } from './rutas/pacienteRutas.js';
 import { especialistasRutas } from './rutas/especialistasRutas.js';
+import { departamentoRutas } from './rutas/departamentosRutas.js';
 
 dotenv.config();
 
@@ -48,6 +49,7 @@ app.use(especialidadRutas);
 app.use(empleadoRutas);
 app.use(pacienteRutas);
 app.use(especialistasRutas);
+app.use(departamentoRutas);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
